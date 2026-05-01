@@ -28,61 +28,52 @@ return {
 	},
 	config = function()
 		require("mason").setup()
+		local servers = {
+			"bashls",
+			"cssls",
+			"html",
+			"lua_ls",
+			"jsonls",
+			"quick_lint_js",
+			"pyright",
+		}
 
 		require("mason-lspconfig").setup({
-			-- Install these LSPs automatically
-			ensure_installed = {
-				"bashls",
-				"cssls",
-				"html",
-				"lua_ls",
-				"jsonls",
-				"quick_lint_js",
-				"pyright",
-			},
+			ensure_installed = servers,
+			automatic_enable = false,
 		})
 
-		local lspconfig = require("lspconfig")
 		local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
-
-		--require("cmp_nvim_lsp").default_capabilities()
 
 		local lsp_attach = function(client, bufnr)
 			-- Create your keybindings here...
 		end
 
-		-- Call setup on each LSP server
-		require("mason-lspconfig").setup_handlers({
-			["lua_ls"] = function()
-				lspconfig.lua_ls.setup({
-					on_attach = lsp_attach,
-					capabilities = lsp_capabilities,
-					settings = {
-						Lua = {
-							diagnostics = {
-								globals = { "vim" },
-							},
-						},
-					},
-				})
-			end,
-			["pyright"] = function()
-				lspconfig.pyright.setup({
-					on_attach = lsp_attach,
-					capabilities = lsp_capabilities,
-					settings = {
-						pyright = {},
-						python = {},
-					},
-				})
-			end,
-			function(server_name)
-				lspconfig[server_name].setup({
-					on_attach = lsp_attach,
-					capabilities = lsp_capabilities,
-				})
-			end,
+		vim.lsp.config("*", {
+			on_attach = lsp_attach,
+			capabilities = lsp_capabilities,
 		})
+
+		vim.lsp.config("lua_ls", {
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+				},
+			},
+		})
+
+		vim.lsp.config("pyright", {
+			settings = {
+				pyright = {},
+				python = {},
+			},
+		})
+
+		for _, server in ipairs(servers) do
+			vim.lsp.enable(server)
+		end
 
 		-- Globally configure all LSP floating preview popups (like hover, signature help, etc)
 		local open_floating_preview = vim.lsp.util.open_floating_preview
