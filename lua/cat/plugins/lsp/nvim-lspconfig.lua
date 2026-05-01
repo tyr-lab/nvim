@@ -28,6 +28,7 @@ return {
 	},
 	config = function()
 		require("mason").setup()
+
 		require("mason-lspconfig").setup({
 			-- Install these LSPs automatically
 			ensure_installed = {
@@ -52,29 +53,35 @@ return {
 
 		-- Call setup on each LSP server
 		require("mason-lspconfig").setup_handlers({
+			["lua_ls"] = function()
+				lspconfig.lua_ls.setup({
+					on_attach = lsp_attach,
+					capabilities = lsp_capabilities,
+					settings = {
+						Lua = {
+							diagnostics = {
+								globals = { "vim" },
+							},
+						},
+					},
+				})
+			end,
+			["pyright"] = function()
+				lspconfig.pyright.setup({
+					on_attach = lsp_attach,
+					capabilities = lsp_capabilities,
+					settings = {
+						pyright = {},
+						python = {},
+					},
+				})
+			end,
 			function(server_name)
 				lspconfig[server_name].setup({
 					on_attach = lsp_attach,
 					capabilities = lsp_capabilities,
 				})
 			end,
-		})
-
-		-- Lua LSP settings
-		lspconfig.lua_ls.setup({
-			settings = {
-				Lua = {
-					diagnostics = {
-						-- Get the language server to recognize the `vim` global
-						globals = { "vim" },
-					},
-				},
-			},
-		})
-		-- PYRIGHT LSP settings
-		lspconfig.pyright.setup({
-			pyright = {},
-			python = {},
 		})
 
 		-- Globally configure all LSP floating preview popups (like hover, signature help, etc)

@@ -7,7 +7,12 @@ return {
 		"mfussenegger/nvim-dap",
 	},
 	config = function()
-		-- Update the path passed to setup to point to your system or virtual env python binary
-		require("dap-python").setup("/usr/bin/python3")
+		local python = vim.fn.exepath("python3")
+		if python == "" then
+			vim.notify("python3 no esta disponible para nvim-dap-python", vim.log.levels.WARN)
+			return
+		end
+
+		require("dap-python").setup(python)
 	end,
 }

@@ -10,11 +10,11 @@ return {
 			javascriptreact = { "eslint_d" },
 			typescriptreact = { "eslint_d" },
 			svelte = { "eslint_d" },
-			python = { "pylint", "flake8"},
+			python = { "pylint", "flake8" },
 		}
-		-- Automatically run linters after saving.  Use "InsertLeave" for more aggressive linting.
+
+		-- Run the configured linter for the current buffer after saving.
 		vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-			pattern = { "*.js", "*.py" },
 			callback = function()
 				require("lint").try_lint()
 			end,

@@ -1,7 +1,13 @@
 return {
 	"Vigemus/iron.nvim",
+	keys = {
+		{ "<leader>rs", "<cmd>IronRepl<cr>", desc = "Open REPL" },
+		{ "<leader>rr", "<cmd>IronRestart<cr>", desc = "Restart REPL" },
+		{ "<leader>rf", "<cmd>IronFocus<cr>", desc = "Focus REPL" },
+		{ "<leader>rh", "<cmd>IronHide<cr>", desc = "Hide REPL" },
+	},
 	config = function()
-		iron = require("iron.core")
+		local iron = require("iron.core")
 		iron.setup({
 			config = {
 				-- Whether a repl should be discarded or not
@@ -45,9 +51,4 @@ return {
 			ignore_blank_lines = true,
 		})
 	end,
-
-	vim.keymap.set("n", "<space>rs", "<cmd>IronRepl<cr>"),
-	vim.keymap.set("n", "<space>rr", "<cmd>IronRestart<cr>"),
-	vim.keymap.set("n", "<space>rf", "<cmd>IronFocus<cr>"),
-	vim.keymap.set("n", "<space>rh", "<cmd>IronHide<cr>"),
 }

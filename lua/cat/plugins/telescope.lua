@@ -2,8 +2,8 @@ return {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.8",
     dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
-    config = function()
-        local telescope = require("telescope")
+	config = function()
+		local telescope = require("telescope")
 
         telescope.setup({
             defaults = {
@@ -23,11 +23,11 @@ return {
                     n = { ["q"] = require("telescope.actions").close },
                 },
             },
-        })
+		})
 
-        telescope.load_extension("fzf")
-        telescope.load_extension("noice")
-    end,
+		pcall(telescope.load_extension, "fzf")
+		pcall(telescope.load_extension, "noice")
+	end,
 
     extensions = {},
 }

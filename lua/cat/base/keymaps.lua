@@ -40,7 +40,7 @@ map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find o
 map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
 map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
 map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
-map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
+map("n", "<leader>pt", "<cmd>Telescope builtin<CR>", { desc = "telescope builtins" })
 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
 map(
@@ -55,7 +55,7 @@ map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
 
 -- Barbar
 map("n", "<Tab>", ":BufferNext<CR>", { desc = "Next Buffer" })
-map("n", "<S-Tab>", ":BufferPrevious<CR>", { desc = "Next Buffer" })
+map("n", "<S-Tab>", ":BufferPrevious<CR>", { desc = "Previous Buffer" })
 map("n", "<leader>x", ":BufferClose<CR>", { desc = "Delete Buffer" })
 
 -- nvimtree
