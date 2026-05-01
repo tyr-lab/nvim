@@ -17,14 +17,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Configure and set up lazy.nvim with specific options
-require("lazy").setup({
-	{ import = "cat.plugins" },
-	{ import = "cat.plugins.style" },
-	{ import = "cat.plugins.git" },
-	{ import = "cat.plugins.python" },
-	{ import = "cat.plugins.lsp" },
-	{ import = "cat.plugins.utils" },
-}, {
+	require("lazy").setup({
+		{ import = "cat.plugins" },
+		{ import = "cat.plugins.style" },
+		{ import = "cat.plugins.git" },
+		{ import = "cat.plugins.lsp" },
+		{ import = "cat.plugins.utils" },
+	}, {
 	checker = {
 		enabled = true,
 		notify = false,

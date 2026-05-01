@@ -17,12 +17,12 @@ map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
 
-map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
-map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
+map("n", "<leader>tn", "<cmd>set nu!<CR>", { desc = "toggle line number" })
+map("n", "<leader>tr", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 
-map("n", "<leader>fm", function()
-	require("conform").format({ lsp_fallback = true })
-end, { desc = "general format file" })
+	map("n", "<leader>fm", function()
+		require("conform").format({ lsp_fallback = true })
+	end, { desc = "general format file" })
 
 -- global lsp mappings
 map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic loclist" })
@@ -38,9 +38,11 @@ map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help 
 map("n", "<leader>ma", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
 map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
 map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
-map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
-map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
-map("n", "<leader>pt", "<cmd>Telescope builtin<CR>", { desc = "telescope builtins" })
+	map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
+	map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
+	map("n", "<leader>pt", "<cmd>Telescope builtin<CR>", { desc = "telescope builtins" })
+	map("n", "<leader>nh", "<cmd>Noice history<CR>", { desc = "noice history" })
+	map("n", "<leader>nd", "<cmd>Noice dismiss<CR>", { desc = "dismiss notifications" })
 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
 map(
@@ -58,6 +60,7 @@ map("n", "<Tab>", ":BufferNext<CR>", { desc = "Next Buffer" })
 map("n", "<S-Tab>", ":BufferPrevious<CR>", { desc = "Previous Buffer" })
 map("n", "<leader>x", ":BufferClose<CR>", { desc = "Delete Buffer" })
 
--- nvimtree
-map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
-map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+	-- oil
+	map("n", "<C-n>", "<cmd>Oil<CR>", { desc = "open parent directory" })
+	map("n", "<leader>e", "<cmd>Oil<CR>", { desc = "open file explorer" })
+	map("n", "-", "<cmd>Oil<CR>", { desc = "open parent directory" })

@@ -29,11 +29,10 @@ return {
 				telescope = { enabled = true, style = "nvchad" },
 				gitsigns = true,
 				barbar = true,
-				nvimtree = true,
 				treesitter = true,
 				which_key = true,
 				noice = true,
-				dap = true,
+				notify = true,
 				blink_cmp = true,
 				beacon = true,
 				native_lsp = {

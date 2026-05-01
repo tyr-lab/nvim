@@ -2,21 +2,20 @@
 
 > A small, focused Neovim setup for Python, Lua and JavaScript.
 
-Configuracion personal de Neovim enfocada en Python, Lua y JavaScript, con una base simple en Lua y gestion de plugins con `lazy.nvim`.
+Configuracion personal de Neovim enfocada en Python, Lua y JavaScript, con una base simple en Lua, menos plugins situacionales y un stack moderno basado en `ruff`, `oil.nvim` y `lazy.nvim`.
 
 ## ✨ Que incluye
 
 - Gestor de plugins con `lazy.nvim`
 - Tema `catppuccin` y dashboard de inicio con `alpha-nvim`
-- Busqueda con `telescope` y explorador de archivos con `nvim-tree`
+- Busqueda con `telescope` y explorador de archivos con `oil.nvim`
 - Barra de buffers con `barbar` y statusline con `lualine`
 - LSP con `mason`, `mason-lspconfig` y `nvim-lspconfig`
 - Autocompletado con `blink.cmp`
 - Formateo con `conform.nvim`
 - Linting con `nvim-lint`
-- Integracion con Git mediante `gitsigns` y `lazygit`
-- Soporte de debugging con `nvim-dap`, `nvim-dap-ui` y `nvim-dap-python`
-- Flujo interactivo para Python con `iron.nvim`
+- Integracion con Git mediante `gitsigns`
+- UI mejorada para mensajes, notificaciones y cmdline con `noice.nvim`
 
 ## 🗂️ Estructura
 
@@ -44,17 +43,12 @@ Configuracion personal de Neovim enfocada en Python, Lua y JavaScript, con una b
 
 Antes de usar esta configuracion necesitas tener instalado:
 
-- `nvim` 0.10+
+- `nvim` 0.12+
 - `git`
 - `make` para compilar `telescope-fzf-native`
 - `ripgrep` para `Telescope live_grep`
 - `node` para herramientas instaladas por Mason y parte del ecosistema JS
 - `python3`
-
-Dependencias opcionales recomendadas:
-
-- `lazygit` para el comando `:LazyGit`
-- `ipython` para el REPL de Python con `iron.nvim`
 
 ## 🚀 Instalacion
 
@@ -62,8 +56,14 @@ Dependencias opcionales recomendadas:
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install neovim git make ripgrep node python lazygit
-python3 -m pip install ipython black isort pylint flake8
+brew install neovim git make ripgrep node python
+```
+
+Herramientas como `stylua`, `prettierd`, `eslint_d` y `ruff` se instalan automaticamente con Mason al abrir Neovim.
+
+Si prefieres tener algunas herramientas tambien fuera de Neovim:
+
+```sh
 npm install -g prettier prettierd eslint_d
 ```
 
@@ -90,21 +90,22 @@ En el primer arranque `lazy.nvim` se instala automaticamente y despues descarga 
 - `bashls`
 - `cssls`
 - `html`
+- `ts_ls`
 - `lua_ls`
 - `jsonls`
-- `quick_lint_js`
 - `pyright`
+- `ruff`
 
 ### Formateadores
 
 - Lua: `stylua`
-- Python: `black`, `isort`
+- Python: `ruff_fix`, `ruff_format`
 - JavaScript y JSON: `prettierd`, `prettier`
 
 ### Linters
 
 - JavaScript, TypeScript, React y Svelte: `eslint_d`
-- Python: `pylint`, `flake8`
+- Python: `ruff`
 
 ### Treesitter
 
@@ -134,13 +135,13 @@ Lenguajes asegurados por defecto:
 - `rainbow-delimiters.nvim`: delimitadores coloreados
 - `beacon.nvim`: resalta el cursor tras saltos
 - `noice.nvim`: mejora mensajes y UI de Neovim
+- `nvim-notify`: notificaciones
 - `nvzone/minty`: utilidades visuales (`:Shades`, `:Huefy`)
 
 ### Navegacion y archivos
 
 - `telescope.nvim`: busqueda difusa
 - `telescope-fzf-native.nvim`: mejora de rendimiento para Telescope
-- `nvim-tree.lua`: arbol de archivos
 - `oil.nvim`: explorador de archivos estilo buffer
 
 ### Edicion
@@ -154,7 +155,6 @@ Lenguajes asegurados por defecto:
 ### Git
 
 - `gitsigns.nvim`: hunks, blame y diff inline
-- `lazygit.nvim`: integracion con LazyGit
 
 ### LSP, formato y lint
 
@@ -167,17 +167,7 @@ Lenguajes asegurados por defecto:
 - `conform.nvim`: formateo
 - `nvim-lint`: linting
 - `fidget.nvim`: estado de LSP
-- `neodev.nvim`: soporte extra para Lua en Neovim
-
-### Testing, REPL y debugging
-
-- `vim-test`: ejecucion de tests
-- `iron.nvim`: REPL para shell y Python
-- `nvim-dap`: base de debugging
-- `nvim-dap-ui`: interfaz para DAP
-- `nvim-dap-virtual-text`: variables inline durante debugging
-- `telescope-dap.nvim`: integracion DAP con Telescope
-- `nvim-dap-python`: debugging para Python
+- `lazydev.nvim`: soporte extra para Lua en Neovim
 
 ## ⌨️ Atajos principales
 
@@ -188,8 +178,8 @@ La tecla leader es `Espacio`.
 - `<C-s>`: guardar archivo
 - `<Esc>`: limpiar highlights de busqueda
 - `<leader>fm`: formatear archivo
-- `<leader>n`: activar o desactivar numeros de linea
-- `<leader>rn`: activar o desactivar numeros relativos
+- `<leader>tn`: activar o desactivar numeros de linea
+- `<leader>tr`: activar o desactivar numeros relativos
 - `<leader>/`: comentar linea o seleccion
 
 ### Ventanas
@@ -209,17 +199,29 @@ La tecla leader es `Espacio`.
 - `<leader>gt`: estado Git
 - `<leader>pt`: listado de pickers de Telescope
 
+### LSP
+
+- `K`: hover
+- `gd`: ir a definicion
+- `gD`: ir a declaracion
+- `gi`: ir a implementacion
+- `gr`: referencias
+- `<leader>rn`: renombrar simbolo
+- `<leader>ca`: code actions
+- `<leader>fd`: diagnostico flotante
+- `[d` / `]d`: diagnostico anterior o siguiente
+
 ### Explorador y buffers
 
-- `<C-n>`: abrir o cerrar `nvim-tree`
-- `<leader>e`: enfocar `nvim-tree`
+- `<C-n>`: abrir `oil`
+- `<leader>e`: abrir `oil`
+- `-`: abrir el directorio padre con `oil`
 - `<Tab>`: siguiente buffer
 - `<S-Tab>`: buffer anterior
 - `<leader>x`: cerrar buffer
 
 ### Git
 
-- `<leader>lg`: abrir LazyGit
 - `]h` / `[h`: siguiente o anterior hunk
 - `<leader>hs`: stage hunk
 - `<leader>hr`: reset hunk
@@ -231,23 +233,18 @@ La tecla leader es `Espacio`.
 - `<leader>hB`: activar o desactivar blame inline
 - `<leader>hd`: diff actual
 
-### REPL con Iron
+### Noice
 
-- `<leader>rs`: abrir REPL
-- `<leader>rr`: reiniciar REPL
-- `<leader>rf`: enfocar REPL
-- `<leader>rh`: ocultar REPL
-- `<leader>sl`: enviar linea actual
-- `<leader>sf`: enviar archivo completo
-- `<leader>sc`: enviar seleccion o movimiento
+- `<leader>nh`: historial de mensajes
+- `<leader>nd`: cerrar notificaciones visibles
 
 ## 🛠️ Comandos utiles
 
 - `:Lazy`: gestionar plugins
 - `:Mason`: gestionar LSPs, linters y formateadores
 - `:checkhealth`: comprobar estado general de Neovim
-- `:LazyGit`: abrir interfaz Git
-- `:NvimTreeToggle`: alternar arbol de archivos
+- `:Noice`: abrir historial de mensajes y utilidades de Noice
+- `:Oil`: abrir el explorador de archivos
 
 ## ⚙️ Opciones base de la configuracion
 
@@ -264,11 +261,11 @@ Esta configuracion activa por defecto:
 ## 📌 Notas
 
 - El foco principal actual de esta configuracion esta en Python, Lua y JavaScript.
-- Algunas herramientas se instalan via Mason y otras deben existir en tu sistema para que los plugins funcionen al completo.
+- La configuracion usa `ruff` como base moderna para Python y `oil.nvim` como explorador principal.
+- Algunas herramientas se instalan via Mason y otras pueden existir en tu sistema si prefieres reutilizarlas fuera de Neovim.
 - Si algo no funciona, ejecuta `:checkhealth`, `:Lazy` y `:Mason` para localizar rapido la dependencia que falta.
 
 ## 🧭 Mejoras futuras razonables
 
-- Documentar atajos de debugging si se anaden mappings dedicados.
 - Añadir capturas o GIFs del dashboard, Telescope y flujo Python.
-- Incluir una seccion de troubleshooting para errores comunes de Mason, DAP y LazyGit.
+- Incluir una seccion de troubleshooting para errores comunes de Mason, Blink y Treesitter.

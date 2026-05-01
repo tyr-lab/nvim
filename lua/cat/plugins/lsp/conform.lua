@@ -1,24 +1,31 @@
 return {
 	"stevearc/conform.nvim",
+	dependencies = {
+		"williamboman/mason.nvim",
+		"zapling/mason-conform.nvim",
+	},
 	config = function()
+		require("mason").setup()
 		require("conform").setup({
-			-- Associate formatters by file type
 			formatters_by_ft = {
-				lua = { "stylua" }, -- Use 'stylua' for Lua files
-				python = { "black", "isort" }, -- Use 'isort' and 'ruff' for Python files
-				javascript = { "prettierd", "prettier" }, -- Use 'prettierd' and 'prettier' for JavaScript files
+				lua = { "stylua" },
+				python = { "ruff_fix", "ruff_format" },
+				javascript = { "prettierd", "prettier" },
+				typescript = { "prettierd", "prettier" },
+				javascriptreact = { "prettierd", "prettier" },
+				typescriptreact = { "prettierd", "prettier" },
 				json = { "prettierd", "prettier" },
 			},
-
-			-- Default options for formatting
 			default_format_opts = {
-				lsp_format = "fallback", -- Use LSP formatting as a fallback option
+				lsp_format = "fallback",
 			},
-
-			-- Format on save options
 			format_on_save = {
-				timeout_ms = 500, -- Maximum wait time (in milliseconds) for formatting on save
+				timeout_ms = 800,
 			},
+		})
+
+		require("mason-conform").setup({
+			ignore_install = { "stylua", "prettierd", "prettier", "ruff_fix", "ruff_format" },
 		})
 	end,
 }

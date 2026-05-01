@@ -5,25 +5,9 @@ return {
 	"neovim/nvim-lspconfig",
 	event = "VeryLazy",
 	dependencies = {
-		-- LSP Management
-		-- https://github.com/williamboman/mason.nvim
 		{ "williamboman/mason.nvim" },
-		-- https://github.com/williamboman/mason-lspconfig.nvim
 		{ "williamboman/mason-lspconfig.nvim" },
-
-		-- Auto-Install LSPs, linters, formatters, debuggers
-		-- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
-		--{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
-
-		{ "rshkarin/mason-nvim-lint" },
-		-- Useful status updates for LSP
-		-- https://github.com/j-hui/fidget.nvim
 		{ "j-hui/fidget.nvim", opts = {} },
-
-		-- Additional lua configuration, makes nvim stuff amazing!
-		-- https://github.com/folke/neodev.nvim
-		{ "folke/neodev.nvim", opts = {} },
-		{ "zapling/mason-conform.nvim" },
 		{ "saghen/blink.cmp" },
 	},
 	config = function()
@@ -32,10 +16,11 @@ return {
 			"bashls",
 			"cssls",
 			"html",
+			"ts_ls",
 			"lua_ls",
 			"jsonls",
-			"quick_lint_js",
 			"pyright",
+			"ruff",
 		}
 
 		require("mason-lspconfig").setup({
@@ -45,8 +30,25 @@ return {
 
 		local lsp_capabilities = require("blink.cmp").get_lsp_capabilities()
 
+		local map = function(mode, lhs, rhs, desc, bufnr)
+			vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+		end
+
 		local lsp_attach = function(client, bufnr)
-			-- Create your keybindings here...
+			map("n", "K", vim.lsp.buf.hover, "LSP hover", bufnr)
+			map("n", "gd", vim.lsp.buf.definition, "LSP goto definition", bufnr)
+			map("n", "gD", vim.lsp.buf.declaration, "LSP goto declaration", bufnr)
+			map("n", "gi", vim.lsp.buf.implementation, "LSP goto implementation", bufnr)
+			map("n", "gr", vim.lsp.buf.references, "LSP references", bufnr)
+			map("n", "<leader>rn", vim.lsp.buf.rename, "LSP rename", bufnr)
+			map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "LSP code action", bufnr)
+			map("n", "<leader>fd", vim.diagnostic.open_float, "Line diagnostics", bufnr)
+			map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic", bufnr)
+			map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic", bufnr)
+
+			if client.name == "ruff" then
+				client.server_capabilities.hoverProvider = false
+			end
 		end
 
 		vim.lsp.config("*", {
@@ -68,6 +70,16 @@ return {
 			settings = {
 				pyright = {},
 				python = {},
+			},
+		})
+
+		vim.diagnostic.config({
+			severity_sort = true,
+			float = { border = "rounded", source = "if_many" },
+			underline = true,
+			virtual_text = {
+				spacing = 2,
+				prefix = "●",
 			},
 		})
 

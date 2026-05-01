@@ -19,8 +19,5 @@ return {
 				enabled = false,
 			},
 		},
-		sidebar_filetypes = {
-			NvimTree = true,
-		},
 	},
 }
