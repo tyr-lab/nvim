@@ -1,8 +1,10 @@
 # Neovim Config
 
+> A small, focused Neovim setup for Python, Lua and JavaScript.
+
 Configuracion personal de Neovim enfocada en Python, Lua y JavaScript, con una base simple en Lua y gestion de plugins con `lazy.nvim`.
 
-## Que incluye
+## ✨ Que incluye
 
 - Gestor de plugins con `lazy.nvim`
 - Tema `catppuccin` y dashboard de inicio con `alpha-nvim`
@@ -16,7 +18,7 @@ Configuracion personal de Neovim enfocada en Python, Lua y JavaScript, con una b
 - Soporte de debugging con `nvim-dap`, `nvim-dap-ui` y `nvim-dap-python`
 - Flujo interactivo para Python con `iron.nvim`
 
-## Estructura
+## 🗂️ Estructura
 
 ```text
 .
@@ -38,7 +40,7 @@ Configuracion personal de Neovim enfocada en Python, Lua y JavaScript, con una b
             `-- utils/
 ```
 
-## Requisitos
+## 🧰 Requisitos
 
 Antes de usar esta configuracion necesitas tener instalado:
 
@@ -54,9 +56,9 @@ Dependencias opcionales recomendadas:
 - `lazygit` para el comando `:LazyGit`
 - `ipython` para el REPL de Python con `iron.nvim`
 
-## Instalacion
+## 🚀 Instalacion
 
-### 1. Instalar dependencias con Homebrew
+### 1. 🍺 Instalar dependencias con Homebrew
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -65,7 +67,7 @@ python3 -m pip install ipython black isort pylint flake8
 npm install -g prettier prettierd eslint_d
 ```
 
-### 2. Clonar la configuracion
+### 2. 📥 Clonar la configuracion
 
 Neovim busca su configuracion en `~/.config/nvim`, asi que este repositorio debe vivir ahi:
 
@@ -73,7 +75,7 @@ Neovim busca su configuracion en `~/.config/nvim`, asi que este repositorio debe
 git clone https://github.com/tyr-lab/nvim ~/.config/nvim
 ```
 
-### 3. Abrir Neovim
+### 3. ▶️ Abrir Neovim
 
 ```sh
 nvim
@@ -81,7 +83,7 @@ nvim
 
 En el primer arranque `lazy.nvim` se instala automaticamente y despues descarga el resto de plugins.
 
-## Lenguajes y herramientas configuradas
+## 🧪 Lenguajes y herramientas configuradas
 
 ### LSP instalados automaticamente con Mason
 
@@ -112,7 +114,7 @@ Lenguajes asegurados por defecto:
 - `python`
 - `javascript`
 
-## Plugins por categoria
+## 🧩 Plugins por categoria
 
 ### Base
 
@@ -177,7 +179,7 @@ Lenguajes asegurados por defecto:
 - `telescope-dap.nvim`: integracion DAP con Telescope
 - `nvim-dap-python`: debugging para Python
 
-## Atajos principales
+## ⌨️ Atajos principales
 
 La tecla leader es `Espacio`.
 
@@ -239,7 +241,7 @@ La tecla leader es `Espacio`.
 - `<leader>sf`: enviar archivo completo
 - `<leader>sc`: enviar seleccion o movimiento
 
-## Comandos utiles
+## 🛠️ Comandos utiles
 
 - `:Lazy`: gestionar plugins
 - `:Mason`: gestionar LSPs, linters y formateadores
@@ -247,7 +249,7 @@ La tecla leader es `Espacio`.
 - `:LazyGit`: abrir interfaz Git
 - `:NvimTreeToggle`: alternar arbol de archivos
 
-## Opciones base de la configuracion
+## ⚙️ Opciones base de la configuracion
 
 Esta configuracion activa por defecto:
 
@@ -259,13 +261,13 @@ Esta configuracion activa por defecto:
 - soporte para colores verdaderos
 - `undofile`
 
-## Notas
+## 📌 Notas
 
 - El foco principal actual de esta configuracion esta en Python, Lua y JavaScript.
 - Algunas herramientas se instalan via Mason y otras deben existir en tu sistema para que los plugins funcionen al completo.
 - Si algo no funciona, ejecuta `:checkhealth`, `:Lazy` y `:Mason` para localizar rapido la dependencia que falta.
 
-## Mejoras futuras razonables
+## 🧭 Mejoras futuras razonables
 
 - Documentar atajos de debugging si se anaden mappings dedicados.
 - Añadir capturas o GIFs del dashboard, Telescope y flujo Python.
