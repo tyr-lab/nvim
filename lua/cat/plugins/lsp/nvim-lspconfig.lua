@@ -3,7 +3,7 @@ return {
 	-- LSP Configuration
 	-- https://github.com/neovim/nvim-lspconfig
 	"neovim/nvim-lspconfig",
-	event = "VeryLazy",
+	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		{ "williamboman/mason.nvim" },
 		{ "williamboman/mason-lspconfig.nvim" },
@@ -12,6 +12,28 @@ return {
 	},
 	config = function()
 		require("mason").setup()
+
+		local function find_python(root_dir)
+			local candidates = {
+				root_dir and (root_dir .. "/.venv/bin/python"),
+				root_dir and (root_dir .. "/venv/bin/python"),
+				vim.env.VIRTUAL_ENV and (vim.env.VIRTUAL_ENV .. "/bin/python"),
+			}
+
+			for _, path in ipairs(candidates) do
+				if path and vim.fn.executable(path) == 1 then
+					return path
+				end
+			end
+
+			local python = vim.fn.exepath("python3")
+			if python ~= "" then
+				return python
+			end
+
+			return vim.fn.exepath("python")
+		end
+
 		local servers = {
 			"bashls",
 			"cssls",
@@ -67,10 +89,20 @@ return {
 		})
 
 		vim.lsp.config("pyright", {
+			root_markers = { ".venv", "venv", "pyproject.toml", "requirements.txt", "requirements-dev.txt", ".git" },
+			before_init = function(_, config)
+				config.settings = config.settings or {}
+				config.settings.python = config.settings.python or {}
+				config.settings.python.pythonPath = find_python(config.root_dir)
+			end,
 			settings = {
 				pyright = {},
 				python = {},
 			},
+		})
+
+		vim.lsp.config("ruff", {
+			root_markers = { ".venv", "venv", "pyproject.toml", "requirements.txt", "requirements-dev.txt", ".git" },
 		})
 
 		vim.diagnostic.config({

@@ -2,6 +2,13 @@ local opt = vim.opt
 local o = vim.o
 local g = vim.g
 
+local homebrew_bin = "/opt/homebrew/bin"
+local homebrew_sbin = "/opt/homebrew/sbin"
+
+if vim.fn.isdirectory(homebrew_bin) == 1 then
+	vim.env.PATH = table.concat({ homebrew_bin, homebrew_sbin, vim.env.PATH }, ":")
+end
+
 -------------------------------------- options ------------------------------------------
 g.mapleader = " "
 g["test#python#runner"] = "pytest"
